@@ -22,7 +22,7 @@ func main() {
 	dirFlag := flag.String("d", ".", "Directory to check PDF files.")
 	flag.Parse()
 
-	fmt.Println("[+] pdf page running...")
+	fmt.Println("[+] pdfpage running...")
 
 	files, err := os.ReadDir(*dirFlag)
 	if err != nil {
@@ -48,4 +48,6 @@ func main() {
 			totalCount += pageCount
 		}
 	}
+
+	fmt.Println("[+] Total PDF pages count:", totalCount)
 }
