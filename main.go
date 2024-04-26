@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -30,6 +29,7 @@ func main() {
 	}
 
 	var totalCount int
+	var failures []string
 	for _, file := range files {
 		if file.IsDir() {
 			continue
@@ -40,13 +40,21 @@ func main() {
 
 			pageCount, err := getPDFPageCount(pdfPath)
 			if err != nil {
-				log.Println("error getting page count:", err)
+				fmt.Printf("[x] error getting page count of file %s: %v\n", file.Name(), err)
+				failures = append(failures, file.Name())
 				continue
 			}
 
 			fmt.Printf("%s: %d pages\n", file.Name(), pageCount)
 			totalCount += pageCount
 		}
+	}
+
+	fmt.Println("---------------------------------------------")
+
+	fmt.Println("[+] List of failed PDFs:")
+	for _, failure := range failures {
+		fmt.Printf("- %s\n", failure)
 	}
 
 	fmt.Println("[+] Total PDF pages count:", totalCount)
