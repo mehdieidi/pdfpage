@@ -6,11 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pdfcpu/pdfcpu/pkg/api"
+	pdfcpu "github.com/pdfcpu/pdfcpu/pkg/api"
 )
 
-func getPDFPageCount(pdfPath string) (int, error) {
-	count, err := api.PageCountFile(pdfPath)
+func countPages(pdfPath string) (int, error) {
+	count, err := pdfcpu.PageCountFile(pdfPath)
 	if err != nil {
 		return 0, err
 	}
@@ -18,27 +18,28 @@ func getPDFPageCount(pdfPath string) (int, error) {
 }
 
 func main() {
-	dirFlag := flag.String("d", ".", "Directory to check PDF files.")
+	dir := flag.String("d", ".", "Directory to check PDF files.")
 	flag.Parse()
 
 	fmt.Println("[+] pdfpage running...")
 
-	files, err := os.ReadDir(*dirFlag)
+	files, err := os.ReadDir(*dir)
 	if err != nil {
 		panic(err)
 	}
 
-	var totalCount int
+	var totalPageCount int
 	var failures []string
+
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
 		if filepath.Ext(file.Name()) == ".pdf" {
-			pdfPath := filepath.Join(*dirFlag, file.Name())
+			pdfPath := filepath.Join(*dir, file.Name())
 
-			pageCount, err := getPDFPageCount(pdfPath)
+			pageCount, err := countPages(pdfPath)
 			if err != nil {
 				fmt.Printf("[x] error getting page count of file %s: %v\n", file.Name(), err)
 				failures = append(failures, file.Name())
@@ -46,7 +47,7 @@ func main() {
 			}
 
 			fmt.Printf("%s: %d pages\n", file.Name(), pageCount)
-			totalCount += pageCount
+			totalPageCount += pageCount
 		}
 	}
 
@@ -57,5 +58,5 @@ func main() {
 		fmt.Printf("- %s\n", failure)
 	}
 
-	fmt.Println("[+] Total PDF pages count:", totalCount)
+	fmt.Println("[+] Total page count:", totalPageCount)
 }
