@@ -1,27 +1,39 @@
 # pdfpage
 
-pdfpage iterates through the PDF files in a directory, prints, and calculates the sum
-of all the files page-count.
+## Description
+
+pdfpage is a simple command-line tool to count the pages of pdf files in a
+directory.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [To Do](#To-Do)
+- [Credits](#credits)
+- [License](#license)
 
 ## Installation
 
 ```shell
 $ go install github.com/mehdieidi/pdfpage@latest
-...
 ```
 
 ## Usage
 
-The path of the root directory is given using the -d flag.
-Default is the current directory.
 ```shell
-$ pdfpage -d "./books"
-...
+$ pdfpage -d ./cool_pdfs
 ```
 
-## Todo
+## To Do
 
-* Recursive directory search.
-* Fix pdf library issues.
-* Filtering support.
+- Recursive search
+- Filtering support
 
+## Credits
+
+[pdfcpu](https://github.com/pdfcpu/pdfcpu) is used as the PDF processor library.
+
+## License
+
+MIT
